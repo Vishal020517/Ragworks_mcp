@@ -4,11 +4,6 @@ llm_guard = get_llm(model_name="openai/gpt-oss-120b")
 
 
 def validate_query_llm(query: str) -> tuple[bool, str]:
-    """
-    Uses LLM to classify if a query is SAFE (financial) or UNSAFE.
-    Returns (is_safe, query_or_error_message).
-    """
-
     prompt = f"""
 You are a strict content safety classifier.
 
@@ -20,15 +15,10 @@ Respond ONLY with one word: SAFE or UNSAFE
 
 Query: {query}
 """
-
     try:
-        response = llm_guard.invoke(prompt)
-        result = response.content.strip().upper()
-
+        result = llm_guard.invoke(prompt).content.strip().upper()
         if "UNSAFE" in result:
             return False, "Only financial queries are allowed."
-
         return True, query
-
     except Exception as e:
         return False, f"Guard error: {str(e)}"

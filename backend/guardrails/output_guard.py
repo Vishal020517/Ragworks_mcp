@@ -4,14 +4,6 @@ llm_guard = get_llm(model_name="openai/gpt-oss-120b")
 
 
 def validate_output(response: str) -> tuple[bool, str]:
-    """
-    Validates the agent's final output.
-    Blocks empty, harmful, or clearly nonsensical responses.
-    Allows both full financial analyses and valid conversational answers
-    (e.g. memory queries, clarification responses).
-    Returns (is_valid, response_or_error_message).
-    """
-
     if not response or len(response.strip()) < 10:
         return False, "Response was too short or empty."
 
@@ -32,15 +24,10 @@ Respond ONLY with one word: VALID or INVALID
 Response to review:
 {response}
 """
-
     try:
-        result = llm_guard.invoke(prompt)
-        label = result.content.strip().upper()
-
+        label = llm_guard.invoke(prompt).content.strip().upper()
         if "INVALID" in label:
             return False, "The generated response did not meet quality standards."
-
         return True, response
-
     except Exception as e:
         return False, f"Output guard error: {str(e)}"

@@ -59,35 +59,30 @@ def rag_tool_func(query: str):
 
 
 tools = [
-
     StructuredTool.from_function(
         name="MarketAgent",
         func=market_tool,
         description="Get stock price and market analysis. Input: stock symbol like AAPL",
         args_schema=SymbolInput
     ),
-
     StructuredTool.from_function(
         name="TechnicalAgent",
         func=technical_tool,
         description="Get RSI and technical indicators. Input: stock symbol",
         args_schema=SymbolInput
     ),
-
     StructuredTool.from_function(
         name="NewsAgent",
         func=news_tool,
         description="Get latest news and sentiment. Input: stock symbol",
         args_schema=SymbolInput
     ),
-
     StructuredTool.from_function(
         name="FundamentalAgent",
         func=fundamental_tool,
         description="Get company fundamentals. Input: stock symbol",
         args_schema=SymbolInput
     ),
-
     StructuredTool.from_function(
         name="RAGTool",
         func=rag_tool_func,

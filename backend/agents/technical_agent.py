@@ -1,4 +1,3 @@
-from langchain_groq import ChatGroq
 from mcp_server.tools.financial_tools import calculate_rsi
 from config import get_llm
 
@@ -11,20 +10,18 @@ class TechnicalAgent:
         rsi_data = calculate_rsi(symbol)
 
         prompt = f"""
-        You are a technical stock analyst.
+You are a technical stock analyst.
 
-        RSI Data:
-        {rsi_data}
+RSI Data:
+{rsi_data}
 
-        Interpret this RSI value:
-        - Above 70 → overbought
-        - Below 30 → oversold
+Interpret this RSI value:
+- Above 70 → overbought
+- Below 30 → oversold
 
-        Give trading insight.
-        """
-
+Give trading insight.
+"""
         response = self.llm.invoke(prompt)
-
         return {
             "agent": "technical",
             "symbol": symbol,

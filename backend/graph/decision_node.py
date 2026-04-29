@@ -4,28 +4,17 @@ llm = get_llm(model_name="openai/gpt-oss-120b")
 
 
 def decision_node(state):
-    print("[GRAPH] → DECISION NODE", flush=True)
+    print("[GRAPH] DECISION NODE", flush=True)
 
     prompt = f"""
 You are a financial analyst AI.
 
-User Query:
-{state['query']}
-
-Retrieved Knowledge:
-{state.get('rag')}
-
-Market Data:
-{state.get('market')}
-
-Technical:
-{state.get('technical')}
-
-News:
-{state.get('news')}
-
-Fundamentals:
-{state.get('fundamental')}
+User Query: {state['query']}
+Retrieved Knowledge: {state.get('rag')}
+Market Data: {state.get('market')}
+Technical: {state.get('technical')}
+News: {state.get('news')}
+Fundamentals: {state.get('fundamental')}
 
 Rules:
 - Use retrieved knowledge ONLY if relevant
@@ -41,7 +30,5 @@ Recommendation: BUY / HOLD / SELL
 Reasoning:
 ...
 """
-
     response = llm.invoke(prompt)
-
     return {"final": response.content}

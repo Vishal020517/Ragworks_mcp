@@ -7,9 +7,6 @@ from config import get_llm
 
 llm = get_llm(model_name="llama3-70b-8192")
 
-
-# ------------------ PROMPT ------------------
-
 template = """
 You are an advanced financial AI agent.
 
@@ -35,37 +32,18 @@ Question: {input}
 
 prompt = PromptTemplate.from_template(template)
 
+agent = create_react_agent(llm=llm, tools=tools, prompt=prompt)
 
-# ------------------ CREATE AGENT ------------------
+agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
 
-agent = create_react_agent(
-    llm=llm,
-    tools=tools,
-    prompt=prompt
-)
-
-
-agent_executor = AgentExecutor(
-    agent=agent,
-    tools=tools,
-    verbose=True
-)
-
-
-# ------------------ RUN ------------------
 
 def run():
-    print("\n🔥 ReAct Agent Ready (Modern LangChain)\n")
-
     while True:
         query = input("Ask: ")
-
         if query.lower() in ["exit", "quit"]:
             break
-
         result = agent_executor.invoke({"input": query})
-
-        print("\n💡 FINAL ANSWER:\n")
+        print("\nFINAL ANSWER:\n")
         print(result["output"])
 
 
